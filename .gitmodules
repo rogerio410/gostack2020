@@ -1,9 +1,7 @@
+
 [submodule "level1/nodejs-concepts/nodejs-concepts-projects-app"]
-	path = level1/nodejs-concepts/nodejs-concepts-projects-app
-	url = https://github.com/rogerio410/nodejs-concepts-projects-app
-[submodule "level1/reactjs-concepts/reactjs-concepts-projects-app"]
-	path = level1/reactjs-concepts/reactjs-concepts-projects-app
-	url = https://github.com/rogerio410/reactjs-concepts-projects-app
+    path = level1/nodejs-concepts/nodejs-concepts-projects-app
+    url = https://github.com/rogerio410/nodejs-concepts-projects-app
 [submodule "level1/react-native-concepts/reactnative-concepts-projects-app"]
 	path = level1/react-native-concepts/reactnative-concepts-projects-app
 	url = https://github.com/rogerio410/reactnative-concepts-projects-app

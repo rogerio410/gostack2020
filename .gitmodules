@@ -7,3 +7,6 @@
 [submodule "level1/reactjs-concepts/reactjs-concepts-projects-app"]
 	path = level1/reactjs-concepts/reactjs-concepts-projects-app
 	url = https://github.com/rogerio410/reactjs-concepts-projects-app
+[submodule "level2/nodejs-transations-app"]
+	path = level2/nodejs-transations-app
+	url = https://github.com/rogerio410/nodejs-transations-app.git

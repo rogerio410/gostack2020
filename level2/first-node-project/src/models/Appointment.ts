@@ -1,16 +1,19 @@
-import { Column, Entity, Generated, PrimaryColumn } from 'typeorm'
+import { Column, Entity, Generated, ManyToOne, PrimaryColumn } from 'typeorm'
+import AuditBaseModel from './AuditBaseModel'
+import User from './User'
 
 @Entity()
-class Appointment {
+class Appointment extends AuditBaseModel {
     @Column({
         primary: true,
-        type: 'varchar'
     })
     @Generated('uuid')
     id: string
 
-    @Column({ type: 'varchar', nullable: false })
-    provider: string
+    @ManyToOne(() => User, user => user.appointments,
+        { onDelete: 'SET NULL', onUpdate: 'CASCADE' }
+    )
+    provider: User
 
     @Column({ type: 'timestamp with time zone' })
     date: Date

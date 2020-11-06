@@ -4,19 +4,13 @@ import AuthUserService from '../services/AuthUserService'
 const routes = Router()
 
 routes.post('/', async (request, response) => {
+    const { email, password } = request.body
 
-    try {
-        const { email, password } = request.body
+    const authService = new AuthUserService()
 
-        const authService = new AuthUserService()
+    const { user, token } = await authService.execute({ email, password })
 
-        const { user, token } = await authService.execute({ email, password })
-
-        return response.json({ user, token })
-    } catch (error) {
-        return response.status(400).json({ message: error.message })
-    }
-
+    return response.json({ user, token })
 })
 
 export default routes

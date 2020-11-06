@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
 import AuditBaseModel from './AuditBaseModel'
 import User from './User'
 

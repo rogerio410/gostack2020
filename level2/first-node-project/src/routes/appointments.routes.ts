@@ -23,14 +23,10 @@ routes.post('/', async (request, response) => {
     const parsedDate = parseISO(date)
 
     const createAppointmentService = new CreateAppointmentService()
-    try {
-        const appointment = await createAppointmentService.execute({
-            provider_id, date: parsedDate
-        })
-        return response.json(appointment)
-    } catch (error) {
-        return response.status(400).json({ message: error.message })
-    }
+    const appointment = await createAppointmentService.execute({
+        provider_id, date: parsedDate
+    })
+    return response.json(appointment)
 
 })
 

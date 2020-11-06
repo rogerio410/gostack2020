@@ -1,18 +1,19 @@
-import { v4 as uuidv4 } from 'uuid'
+import { Column, Entity, Generated, PrimaryColumn } from 'typeorm'
 
+@Entity()
 class Appointment {
+    @Column({
+        primary: true,
+        type: 'varchar'
+    })
+    @Generated('uuid')
     id: string
 
+    @Column({ type: 'varchar', nullable: false })
     provider: string
 
+    @Column({ type: 'timestamp with time zone' })
     date: Date
-
-    // constructor(provider: string, date: Date) {
-    constructor({ provider, date }: Omit<Appointment, 'id'>) {
-        this.id = uuidv4()
-        this.provider = provider
-        this.date = date
-    }
 }
 
 export default Appointment

@@ -3,9 +3,13 @@ import { Router } from 'express'
 import CreateAppointmentService from '../services/CreateAppointmentService'
 import AppointmentRepository from '../repositories/AppointmentRepository'
 import { getCustomRepository } from 'typeorm'
+import ensureAuthenticated from '../middleware/ensureAuthenticated'
 
 const routes = Router()
 // all routes are under '/appointments' path
+
+// only for auth user
+routes.use(ensureAuthenticated)
 
 
 routes.get('/', async (request, response) => {

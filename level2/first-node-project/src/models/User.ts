@@ -6,6 +6,7 @@ import AuditBaseModel from './AuditBaseModel'
 class User extends AuditBaseModel {
     @Column({
         primary: true,
+        type: 'uuid'
     })
     @Generated('uuid')
     id: string

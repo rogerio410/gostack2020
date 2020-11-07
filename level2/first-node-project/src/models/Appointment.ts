@@ -6,6 +6,7 @@ import User from './User'
 class Appointment extends AuditBaseModel {
     @Column({
         primary: true,
+        type: 'uuid'
     })
     @Generated('uuid')
     id: string

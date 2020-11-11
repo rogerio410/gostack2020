@@ -36,6 +36,7 @@
     ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-one-expression-per-line": "off",
     "react/jsx-filename-extension": [
       1,
       {
@@ -55,9 +56,10 @@
         "tsx": "never"
       }
     ],
-    "no-use-before-define": "off",
+    "no-unused-vars": "warn",
+    "no-use-before-define": "warn",
     "@typescript-eslint/no-use-before-define": [
-      "error"
+      "warn"
     ]
   },
   "settings": {

@@ -13,3 +13,6 @@
 [submodule "level2/nodejs-transations-bd-app"]
 	path = level2/nodejs-transations-bd-app
 	url = https://github.com/rogerio410/nodejs-transations-bd-app.git
+[submodule "level3/gofinance-reactjs-gostack-L3"]
+	path = level3/gofinance-reactjs-gostack-L3
+	url = https://github.com/rogerio410/gofinance-reactjs-gostack-L3.git

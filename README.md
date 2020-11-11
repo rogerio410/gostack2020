@@ -14,3 +14,7 @@ Immersive training program on Javascript/Typescript Stack
 
 ## Week 02
 - [NodeJS - Transactions API](https://github.com/rogerio410/nodejs-transations-app)
+- [NodeJS - Transactions BD API](https://github.com/rogerio410/nodejs-transations-bd-app)
+
+## Week 03
+- [ReactJS - GoFinance](https://github.com/rogerio410/gofinance-reactjs-gostack-L3/)

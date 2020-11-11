@@ -7,6 +7,8 @@ Immersive training program on Javascript/Typescript Stack
 
 # Challenges Projects Repositories
 
+- [Challenges List Link >>>](https://github.com/rocketseat-education/bootcamp-gostack-desafios)
+
 ## Week 01 
 - [Backend API (Node/express)](https://github.com/rogerio410/nodejs-concepts-projects-app)
 - [ReactJS Web](https://github.com/rogerio410/reactjs-concepts-projects-app)

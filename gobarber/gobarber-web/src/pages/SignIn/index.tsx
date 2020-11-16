@@ -2,14 +2,16 @@ import React, { useCallback, useRef } from 'react'
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
+import { Link, useHistory } from 'react-router-dom'
 import * as Yup from 'yup'
 import logoImg from '../../assets/logo.svg'
-import { Container, Content, Background } from './styles'
+import { Container, AnimationContainer, Content, Background } from './styles'
 
-import { useAuth } from '../../hooks/AuthContext'
+import { useAuth } from '../../context_hooks/AuthContext'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import getValidationErrors from '../../utils/getValidationErrors'
+import { useToast } from '../../context_hooks/ToastContext'
 
 interface SignInFormData {
   email: string
@@ -20,8 +22,8 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
 
   const { signIn, user } = useAuth()
-
-  console.log(user)
+  const { addToast } = useToast()
+  const history = useHistory()
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -39,40 +41,59 @@ const SignIn: React.FC = () => {
           abortEarly: false
         })
         // validation OK
-        signIn({ email: data.email, password: data.password })
-      } catch (error) {
-        const errors = getValidationErrors(error)
+        await signIn({ email: data.email, password: data.password })
 
-        formRef.current?.setErrors(errors)
+        // redirect to Dashboard
+        history.push('/dashboard')
+      } catch (error) {
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error)
+          formRef.current?.setErrors(errors)
+          return
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Error na Autenticação',
+          description:
+            'Ocorreu um erro ao fazer login, verifique as credenciais'
+        })
       }
     },
-    [signIn]
+    [signIn, addToast, history]
   )
 
   return (
     <Container>
       <Content>
-        <img src={logoImg} alt="GoBarber" />
+        <AnimationContainer>
+          <img src={logoImg} alt="GoBarber" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Faça seu logon</h1>
-          <Input name="email" icon={FiMail} type="email" placeholder="E-mail" />
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h1>Faça seu logon</h1>
+            <Input
+              name="email"
+              icon={FiMail}
+              type="email"
+              placeholder="E-mail"
+            />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit">Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
-        </Form>
+            <Link to="/signup">Esqueci minha senha</Link>
+          </Form>
 
-        <a href="signup">
-          <FiLogIn />
-          Criar conta
-        </a>
+          <a href="signup">
+            <FiLogIn />
+            Criar conta
+          </a>
+        </AnimationContainer>
       </Content>
       <Background />
     </Container>

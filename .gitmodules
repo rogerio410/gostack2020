@@ -16,3 +16,6 @@
 [submodule "level3/gofinance-reactjs-gostack-L3"]
 	path = level3/gofinance-reactjs-gostack-L3
 	url = https://github.com/rogerio410/gofinance-reactjs-gostack-L3.git
+[submodule "level3/gomarketplace-react-native-L3"]
+	path = level3/gomarketplace-react-native-L3
+	url = https://github.com/rogerio410/gomarketplace-react-native-L3.git

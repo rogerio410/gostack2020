@@ -1,6 +1,6 @@
 import { Column, Entity, Generated, OneToMany } from 'typeorm'
-import Appointment from './Appointment'
-import AuditBaseModel from './AuditBaseModel'
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment'
+import AuditBaseModel from '@shared/entities/AuditBaseModel'
 
 @Entity()
 class User extends AuditBaseModel {

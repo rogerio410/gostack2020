@@ -1,9 +1,9 @@
 import { parseISO } from 'date-fns'
 import { Router } from 'express'
-import CreateAppointmentService from '../services/CreateAppointmentService'
-import AppointmentRepository from '../repositories/AppointmentRepository'
 import { getCustomRepository } from 'typeorm'
-import ensureAuthenticated from '../middleware/ensureAuthenticated'
+import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService'
+import AppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentRepository'
+import ensureAuthenticated from '@modules/users/infra/http/middleware/ensureAuthenticated'
 
 const routes = Router()
 // all routes are under '/appointments' path

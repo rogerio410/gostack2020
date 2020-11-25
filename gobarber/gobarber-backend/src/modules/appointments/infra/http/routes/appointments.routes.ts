@@ -6,27 +6,27 @@ import AppointmentRepository from '@modules/appointments/infra/typeorm/repositor
 import ensureAuthenticated from '@modules/users/infra/http/middleware/ensureAuthenticated'
 
 const routes = Router()
-// all routes are under '/appointments' path
 
 // only for auth user
 routes.use(ensureAuthenticated)
 
+const appointmentRepository = new AppointmentRepository()
 
-routes.get('/', async (request, response) => {
-    const appointmentRepo = getCustomRepository(AppointmentRepository)
-    return response.json(await appointmentRepo.find())
-})
+// routes.get('/', async (request, response) => {
+//   const appointmentRepo = getCustomRepository(AppointmentRepository)
+//   return response.json(await appointmentRepo.find())
+// })
 
 routes.post('/', async (request, response) => {
-    const { provider_id, date } = request.body
+  const { provider_id, date } = request.body
 
-    const parsedDate = parseISO(date)
+  const parsedDate = parseISO(date)
 
-    const createAppointmentService = new CreateAppointmentService()
-    const appointment = await createAppointmentService.execute({
-        provider_id, date: parsedDate
-    })
-    return response.json(appointment)
+  const createAppointmentService = new CreateAppointmentService(appointmentRepository)
+  const appointment = await createAppointmentService.execute({
+    provider_id, date: parsedDate
+  })
+  return response.json(appointment)
 
 })
 

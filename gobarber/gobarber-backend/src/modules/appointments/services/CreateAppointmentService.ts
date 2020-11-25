@@ -4,15 +4,17 @@ import AppError from '@shared/errors/AppError';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import User from '@modules/users/infra/typeorm/entities/User';
 import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
+import { inject, injectable } from 'tsyringe'
 
 interface IRequest {
   provider_id: string
   date: Date
 }
 
+@injectable()
 class CreateAppointmentService {
 
-  constructor(private repository: IAppointmentRepository) {
+  constructor(@inject('AppointmentRepository') private repository: IAppointmentRepository) {
     this.repository = repository
   }
 

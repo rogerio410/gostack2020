@@ -4,13 +4,12 @@ import { getCustomRepository } from 'typeorm'
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService'
 import AppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentRepository'
 import ensureAuthenticated from '@modules/users/infra/http/middleware/ensureAuthenticated'
+import { container } from 'tsyringe'
 
 const routes = Router()
 
 // only for auth user
 routes.use(ensureAuthenticated)
-
-const appointmentRepository = new AppointmentRepository()
 
 // routes.get('/', async (request, response) => {
 //   const appointmentRepo = getCustomRepository(AppointmentRepository)
@@ -22,7 +21,8 @@ routes.post('/', async (request, response) => {
 
   const parsedDate = parseISO(date)
 
-  const createAppointmentService = new CreateAppointmentService(appointmentRepository)
+  const createAppointmentService = container.resolve(CreateAppointmentService)
+
   const appointment = await createAppointmentService.execute({
     provider_id, date: parsedDate
   })

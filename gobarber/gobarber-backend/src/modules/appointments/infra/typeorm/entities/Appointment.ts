@@ -1,4 +1,4 @@
-import { Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, Generated, ManyToOne } from 'typeorm'
 import AuditBaseModel from '@shared/entities/AuditBaseModel'
 import User from '@modules/users/infra/typeorm/entities/User'
 
@@ -6,14 +6,15 @@ import User from '@modules/users/infra/typeorm/entities/User'
 class Appointment extends AuditBaseModel {
   @Column({
     primary: true,
-    type: 'uuid'
+    type: 'uuid',
   })
   @Generated('uuid')
   id: string
 
-  @ManyToOne(() => User, user => user.appointments,
-    { onDelete: 'SET NULL', onUpdate: 'CASCADE' }
-  )
+  @ManyToOne(() => User, user => user.appointments, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
   provider: User
 
   @Column({ type: 'timestamp with time zone' })

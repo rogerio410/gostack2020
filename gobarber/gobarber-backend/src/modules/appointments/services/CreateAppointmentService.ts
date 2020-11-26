@@ -1,10 +1,10 @@
-import { startOfHour } from 'date-fns';
-import { getRepository } from 'typeorm';
-import AppError from '@shared/errors/AppError';
-import Appointment from '../infra/typeorm/entities/Appointment';
-import User from '@modules/users/infra/typeorm/entities/User';
-import { IAppointmentRepository } from '../repositories/IAppointmentRepository';
+import { startOfHour } from 'date-fns'
+import { getRepository } from 'typeorm'
+import AppError from '@shared/errors/AppError'
+import User from '@modules/users/infra/typeorm/entities/User'
 import { inject, injectable } from 'tsyringe'
+import Appointment from '../infra/typeorm/entities/Appointment'
+import IAppointmentRepository from '../repositories/IAppointmentRepository'
 
 interface IRequest {
   provider_id: string
@@ -13,19 +13,21 @@ interface IRequest {
 
 @injectable()
 class CreateAppointmentService {
-
-  constructor(@inject('AppointmentRepository') private repository: IAppointmentRepository) {
+  constructor(
+    @inject('AppointmentRepository') private repository: IAppointmentRepository,
+  ) {
     this.repository = repository
   }
 
   public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
-
     const appointmentDate = startOfHour(date)
 
-    const findAppointmentInSameDate = await this.repository.findByDate(appointmentDate);
+    const findAppointmentInSameDate = await this.repository.findByDate(
+      appointmentDate,
+    )
 
     if (findAppointmentInSameDate) {
-      throw new AppError('There is already an appointment at this date');
+      throw new AppError('There is already an appointment at this date')
     }
 
     // TODO: Solve this (Get User) maybe routes must send the user
@@ -34,7 +36,7 @@ class CreateAppointmentService {
     })
 
     if (!provider) {
-      throw new AppError('Provider not found');
+      throw new AppError('Provider not found')
     }
 
     const appointment = await this.repository.create({
@@ -42,8 +44,8 @@ class CreateAppointmentService {
       date: appointmentDate,
     })
 
-    return appointment;
+    return appointment
   }
 }
 
-export default CreateAppointmentService;
+export default CreateAppointmentService

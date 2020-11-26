@@ -25,18 +25,13 @@
   "rules": {
     "prettier/prettier": "error",
     "@typescript-eslint/camelcase": "off",
+    "camelcase": "off",
+    "semi": "off",
     "class-methods-use-this": "off",
-    "no-underscore-dangle": "off",
     "@typescript-eslint/no-unused-vars": [
-      "errors",
-      {
-        "argsIgnorePattern": "_"
-      }
-    ],
-    "@typescript-eslint/interface-name-prefix": [
       "error",
       {
-        "prefixWithI": "always"
+        "argsIgnorePattern": "_"
       }
     ],
     "import/extensions": [

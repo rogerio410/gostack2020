@@ -7,36 +7,28 @@ import Appointment from '../infra/typeorm/entities/Appointment'
 import IAppointmentRepository from '../repositories/IAppointmentRepository'
 
 interface IRequest {
-  provider_id: string
+  provider: User
   date: Date
 }
 
 @injectable()
 class CreateAppointmentService {
   constructor(
-    @inject('AppointmentRepository') private repository: IAppointmentRepository,
+    @inject('AppointmentRepository') private repository: IAppointmentRepository
   ) {
+    // TODO: this line it's unnecessary, it's here just by prettier
     this.repository = repository
   }
 
-  public async execute({ provider_id, date }: IRequest): Promise<Appointment> {
+  public async execute({ provider, date }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date)
 
     const findAppointmentInSameDate = await this.repository.findByDate(
-      appointmentDate,
+      appointmentDate
     )
 
     if (findAppointmentInSameDate) {
       throw new AppError('There is already an appointment at this date')
-    }
-
-    // TODO: Solve this (Get User) maybe routes must send the user
-    const provider = await getRepository(User).findOne({
-      id: provider_id,
-    })
-
-    if (!provider) {
-      throw new AppError('Provider not found')
     }
 
     const appointment = await this.repository.create({

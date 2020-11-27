@@ -1,4 +1,6 @@
 import { container } from 'tsyringe'
+import '@modules/users/providers'
+import './providers'
 
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'
 import AppointmentRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentRepository'
@@ -11,7 +13,4 @@ container.registerSingleton<IAppointmentRepository>(
   AppointmentRepository
 )
 
-container.registerSingleton<IUserRepository>(
-  'UserRepository',
-  UserRepository
-)
+container.registerSingleton<IUserRepository>('UserRepository', UserRepository)

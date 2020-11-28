@@ -63,13 +63,13 @@ describe('Auth User', () => {
       fakeHashProvider
     )
 
-    const user = await createUserService.execute({
+    await createUserService.execute({
       name: 'Rogério Silva',
       email: 'rogerio410@gmail.com',
       password: '123456',
     })
 
-    expect(
+    await expect(
       authService.execute({
         email: 'rogerio410@gmail.com',
         password: '123456--',

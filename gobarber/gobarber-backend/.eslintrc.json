@@ -24,7 +24,7 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "warn",
     "@typescript-eslint/camelcase": "off",
     "camelcase": "off",
     "semi": "off",
@@ -32,6 +32,7 @@
     "no-useless-constructor": "off",
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/no-var-requires": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {

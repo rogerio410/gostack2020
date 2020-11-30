@@ -36,7 +36,7 @@
     - O usuário deve poder realizar um novo agendamento com um prestador
 
   **R. N. Funcionais**
-    - A Listagem de Prestadores deve ser armazenada em Cache (evitar acessos ao BD)
+    - A Listagem de Prestadores deve ser armazenada em Cache (evitar acessos ao BD principal)
 
   **Regras de Negócio**
     - Cada agendamento deve durar exatamente 1h

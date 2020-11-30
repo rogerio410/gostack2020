@@ -21,6 +21,8 @@ class UserToken extends AuditBaseModel {
   @ManyToOne(() => User, user => user.userTokens, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
+    // lazy: true, # returns a promises on get value
+    eager: true,
   })
   user: User
 }

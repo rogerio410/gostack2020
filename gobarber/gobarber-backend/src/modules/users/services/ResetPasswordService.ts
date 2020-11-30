@@ -16,7 +16,7 @@ class ResetPasswordService {
     @inject('UserRepository') private userRepository: IUserRepository,
     @inject('UserTokenRepository')
     private userTokenRepository: IUserTokenRepository,
-    @inject('UserTokenRepository') private hashProvider: IHashProvider
+    @inject('HashProvider') private hashProvider: IHashProvider
   ) { }
 
   public async execute({ token, password }: IRequest): Promise<void> {
@@ -27,9 +27,9 @@ class ResetPasswordService {
     }
     const { user } = userToken
 
-    if (!user) {
-      throw new AppError('User does not exist')
-    }
+    // if (!user) {
+    //   throw new AppError('User does not exist')
+    // }
 
     const tokenCreatedAtPlus2 = addHours(userToken.created_at, 2)
 

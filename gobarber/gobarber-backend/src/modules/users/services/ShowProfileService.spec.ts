@@ -1,52 +1,46 @@
 import AppError from '@shared/errors/AppError'
-import { v4 as uuid } from 'uuid'
-import User from '../infra/typeorm/entities/User'
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'
 import IHashProvider from '../providers/HashProvider/models/IHashProvider'
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository'
 import IUserRepository from '../repositories/IUserRepository'
 import CreateUserService from './CreateUserService'
+import ShowProfileService from './ShowProfileService'
 
-let fakeHashProvider: IHashProvider
-let createUserService: CreateUserService
 let fakeUserRepository: IUserRepository
+let createUserService: CreateUserService
+let fakeHashProvider: IHashProvider
+let showProfileService: ShowProfileService
 
 describe('Create User', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     fakeHashProvider = new FakeHashProvider()
-
+    showProfileService = new ShowProfileService(fakeUserRepository)
     createUserService = new CreateUserService(
       fakeUserRepository,
       fakeHashProvider
     )
   })
 
-  it('should create a new user', async () => {
+  it('should to show the profile', async () => {
     const user = await createUserService.execute({
       name: 'Rogério Silva',
       email: 'rogerio410@gmail.com',
       password: '123456',
     })
 
-    expect(user).toHaveProperty('id')
-  })
-
-  it('should not create a new user with duplicate email', async () => {
-    const provider = new User()
-    provider.id = uuid()
-
-    await createUserService.execute({
-      name: 'Rogério Silva',
-      email: 'rogerio410@gmail.com',
-      password: '123456',
+    const profile = await showProfileService.execute({
+      user_id: user.id,
     })
 
+    expect(profile.name).toBe('Rogério Silva')
+    expect(profile.email).toBe('rogerio410@gmail.com')
+  })
+
+  it('should to show the profile from a non-existing user', async () => {
     await expect(
-      createUserService.execute({
-        name: 'Rogério Silva',
-        email: 'rogerio410@gmail.com',
-        password: '123456',
+      showProfileService.execute({
+        user_id: `oioioi`,
       })
     ).rejects.toBeInstanceOf(AppError)
   })

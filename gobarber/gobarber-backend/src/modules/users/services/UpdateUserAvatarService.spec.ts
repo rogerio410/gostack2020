@@ -1,18 +1,31 @@
 import FakeDiskStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeDiskStorageProvider'
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider'
 import AppError from '@shared/errors/AppError'
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'
+import IHashProvider from '../providers/HashProvider/models/IHashProvider'
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository'
+import IUserRepository from '../repositories/IUserRepository'
+import CreateUserService from './CreateUserService'
 import UpdateUserAvatarService from './UpdateUserAvatarService'
 
-describe('Update Avar', () => {
-  it('should update avatar of a existing user', async () => {
-    const fakeUserRepository = new FakeUserRepository()
-    const fakeStorageProvider = new FakeDiskStorageProvider()
+let fakeHashProvider: IHashProvider
+let fakeUserRepository: IUserRepository
+let updateUserAvatarService: UpdateUserAvatarService
+let fakeStorageProvider: IStorageProvider
 
-    const updateUserAvatarService = new UpdateUserAvatarService(
+describe('Update Avar', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository()
+    fakeHashProvider = new FakeHashProvider()
+    fakeStorageProvider = new FakeDiskStorageProvider()
+
+    updateUserAvatarService = new UpdateUserAvatarService(
       fakeUserRepository,
       fakeStorageProvider
     )
+  })
 
+  it('should update avatar of a existing user', async () => {
     const user = await fakeUserRepository.create({
       name: 'John Doe',
       email: 'johndow@gmail.com',
@@ -28,14 +41,6 @@ describe('Update Avar', () => {
   })
 
   it('should not be able to update avatar of a existing user', async () => {
-    const fakeUserRepository = new FakeUserRepository()
-    const fakeStorageProvider = new FakeDiskStorageProvider()
-
-    const updateUserAvatarService = new UpdateUserAvatarService(
-      fakeUserRepository,
-      fakeStorageProvider
-    )
-
     expect(
       updateUserAvatarService.execute({
         user_id: 'okokokok',
@@ -45,15 +50,7 @@ describe('Update Avar', () => {
   })
 
   it('should update avatar of a existing user with a existing avatar', async () => {
-    const fakeUserRepository = new FakeUserRepository()
-    const fakeStorageProvider = new FakeDiskStorageProvider()
-
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile')
-
-    const updateUserAvatarService = new UpdateUserAvatarService(
-      fakeUserRepository,
-      fakeStorageProvider
-    )
 
     const user = await fakeUserRepository.create({
       name: 'John Doe',

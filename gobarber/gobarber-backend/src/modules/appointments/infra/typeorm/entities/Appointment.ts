@@ -17,6 +17,12 @@ class Appointment extends AuditBaseModel {
   })
   provider: User
 
+  @ManyToOne(() => User, user => user.my_appointments, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  user: User
+
   @Column({ type: 'timestamp with time zone' })
   date: Date
 }

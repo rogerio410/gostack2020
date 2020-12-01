@@ -31,7 +31,7 @@
 # Agendamento de Serviço
   **R. Funcionais**
     - O Usuário deve poder listar todos os Prestadores de Serviço cadastrado
-    - O usuário deve poder listar os dias de um mês que tenha horário horários disponíveis para um dado prestador
+    - O usuário deve poder listar os dias de um mês que tenha horários disponíveis para um dado prestador
     - O usuário deve poder listar os horários para um dia específico de um prestador
     - O usuário deve poder realizar um novo agendamento com um prestador
 

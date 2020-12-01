@@ -33,9 +33,6 @@ describe('Create User', () => {
   })
 
   it('should not create a new user with duplicate email', async () => {
-    const provider = new User()
-    provider.id = uuid()
-
     await createUserService.execute({
       name: 'Rogério Silva',
       email: 'rogerio410@gmail.com',

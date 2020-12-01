@@ -15,9 +15,7 @@ class CreateUserService {
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
     @inject('HashProvider') private hashProvider: IHashProvider
-  ) {
-    this.userRepository = userRepository
-  }
+  ) { }
 
   public async execute({ name, email, password }: IRequest): Promise<User> {
     const checkDuplicateEmail = await this.userRepository.findByEmail(email)

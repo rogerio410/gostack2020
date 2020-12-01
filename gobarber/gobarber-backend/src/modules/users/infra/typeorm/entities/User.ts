@@ -27,6 +27,9 @@ class User extends AuditBaseModel {
   @OneToMany(() => Appointment, appointment => appointment.provider)
   appointments: Appointment[]
 
+  @OneToMany(() => Appointment, appointment => appointment.user)
+  my_appointments: Appointment[]
+
   @OneToMany(() => UserToken, userToken => userToken.user)
   userTokens: UserToken[]
 }

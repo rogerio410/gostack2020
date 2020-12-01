@@ -4,29 +4,20 @@ import { container } from 'tsyringe'
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService'
 import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository'
 import User from '@modules/users/infra/typeorm/entities/User'
-import { getRepository } from 'typeorm'
-import AppError from '@shared/errors/AppError'
 import AppointmentRepository from '../../typeorm/repositories/AppointmentRepository'
 
 class AppointmentController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { provider_id, date } = request.body
+    const { user } = request
 
     const parsedDate = parseISO(date)
-
-    // TODO: Solve this (Get User) maybe routes must send the user
-    const provider = await getRepository(User).findOne({
-      id: provider_id,
-    })
-
-    if (!provider) {
-      throw new AppError('Provider not found')
-    }
 
     const createAppointmentService = container.resolve(CreateAppointmentService)
 
     const appointment = await createAppointmentService.execute({
-      provider,
+      user_id: user.id,
+      provider_id,
       date: parsedDate,
     })
     return response.json(appointment)

@@ -1,22 +1,29 @@
+import { isEqual, getMonth, getYear, getDate } from 'date-fns'
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment'
-import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'
+import IAppointmentRepository, {
+  IFindAllAppointmentDTO,
+} from '@modules/appointments/repositories/IAppointmentRepository'
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO'
 import { v4 as uuid } from 'uuid'
-import { isEqual } from 'date-fns'
 import User from '@modules/users/infra/typeorm/entities/User'
+import ProvidersController from '@modules/appointments/infra/http/controllers/ProvidersController'
 
 class FakeAppointmentRepository implements IAppointmentRepository {
   private appointments: Appointment[] = []
 
   public async create({
-    provider,
+    provider_id,
+    user_id,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment()
-    // appointment.id = uuid()
-    // appointment.provider = provider
-    // appointment.date = date
-    Object.assign(appointment, { id: uuid(), provider, date })
+    const provider = new User()
+    provider.id = provider_id
+
+    const user = new User()
+    user.id = user_id
+
+    Object.assign(appointment, { id: uuid(), provider, user, date })
 
     this.appointments.push(appointment)
 
@@ -29,6 +36,34 @@ class FakeAppointmentRepository implements IAppointmentRepository {
     )
 
     return findAppointment
+  }
+
+  public async findAll({
+    provider_id,
+    month,
+    year,
+    day,
+  }: IFindAllAppointmentDTO): Promise<Appointment[]> {
+    const appointments: Appointment[] = this.appointments.filter(
+      appointment => {
+        if (day) {
+          return (
+            appointment.provider.id === provider_id &&
+            getMonth(appointment.date) + 1 === month &&
+            getYear(appointment.date) === year &&
+            getDate(appointment.date) === day
+          )
+        }
+
+        return (
+          appointment.provider.id === provider_id &&
+          getMonth(appointment.date) + 1 === month &&
+          getYear(appointment.date) === year
+        )
+      }
+    )
+
+    return appointments
   }
 
   public async all(user: User): Promise<Appointment[]> {

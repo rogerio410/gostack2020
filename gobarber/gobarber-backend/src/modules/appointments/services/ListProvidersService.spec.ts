@@ -12,7 +12,7 @@ let fakeHashProvider: IHashProvider
 let showProfileService: ShowProfileService
 let listProviderService: ListProviderService
 
-describe('Create User', () => {
+describe('List Provider', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     fakeHashProvider = new FakeHashProvider()

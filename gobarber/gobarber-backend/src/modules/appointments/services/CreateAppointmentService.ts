@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns'
+import { getHours, isBefore, startOfHour } from 'date-fns'
 import { getRepository } from 'typeorm'
 import AppError from '@shared/errors/AppError'
 import User from '@modules/users/infra/typeorm/entities/User'
@@ -7,7 +7,8 @@ import Appointment from '../infra/typeorm/entities/Appointment'
 import IAppointmentRepository from '../repositories/IAppointmentRepository'
 
 interface IRequest {
-  provider: User
+  provider_id: string
+  user_id: string
   date: Date
 }
 
@@ -15,13 +16,26 @@ interface IRequest {
 class CreateAppointmentService {
   constructor(
     @inject('AppointmentRepository') private repository: IAppointmentRepository
-  ) {
-    // TODO: this line it's unnecessary, it's here just by prettier
-    this.repository = repository
-  }
+  ) { }
 
-  public async execute({ provider, date }: IRequest): Promise<Appointment> {
+  public async execute({
+    provider_id,
+    user_id,
+    date,
+  }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date)
+
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError("You can't book an appointment on past")
+    }
+
+    if (provider_id === user_id) {
+      throw new AppError("You can't book a service with yourself")
+    }
+
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError("You can't book a service at this time")
+    }
 
     const findAppointmentInSameDate = await this.repository.findByDate(
       appointmentDate
@@ -31,8 +45,15 @@ class CreateAppointmentService {
       throw new AppError('There is already an appointment at this date')
     }
 
+    const provider = new User()
+    provider.id = provider_id
+
+    const user = new User()
+    user.id = user_id
+
     const appointment = await this.repository.create({
-      provider,
+      provider_id: provider.id,
+      user_id: user.id,
       date: appointmentDate,
     })
 

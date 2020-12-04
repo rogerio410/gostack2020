@@ -1,4 +1,6 @@
 import 'reflect-metadata'
+import 'dotenv/config'
+import { errors } from 'celebrate'
 import express, { NextFunction, Request, Response } from 'express'
 import 'express-async-errors'
 import cors from 'cors'
@@ -17,6 +19,9 @@ app.use(cors())
 app.use('/files', express.static(uploadConfig.uploadFolder))
 
 app.use(routes)
+
+// Celebrate erros:
+app.use(errors())
 
 // Global Error Handler middleware
 app.use(

@@ -43,7 +43,7 @@ class AppointmentRepository implements IAppointmentRepository {
   }
 
   public async all(user: User): Promise<Appointment[]> {
-    return this.ormRepository.find({ where: { provider: user } })
+    return this.ormRepository.find({ where: { user } })
   }
 
   public async findAll({

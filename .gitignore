@@ -158,3 +158,6 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/macos,node,react
 tmp/
 !tmp/.gitkeep
+
+# TypeORM
+ormconfig.json

@@ -11,7 +11,7 @@ const routes = Router()
 const userController = new UserController()
 const userAvatarController = new UserAvatarController()
 
-const upload = multer(uploadConfig)
+const upload = multer(uploadConfig.multer)
 
 routes.post(
   '/',

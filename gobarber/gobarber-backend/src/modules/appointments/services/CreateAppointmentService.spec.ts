@@ -1,5 +1,7 @@
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository'
 import User from '@modules/users/infra/typeorm/entities/User'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
 import AppError from '@shared/errors/AppError'
 import { uuid } from 'uuidv4'
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentRepository'
@@ -9,14 +11,17 @@ describe('Create Appointment', () => {
   let fakeAppointmentRepository: FakeAppointmentRepository
   let fakeNotificationsRepository: FakeNotificationsRepository
   let createAppointmentService: CreateAppointmentService
+  let fakeCacheProvider: ICacheProvider
 
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository()
     fakeNotificationsRepository = new FakeNotificationsRepository()
+    fakeCacheProvider = new FakeCacheProvider()
 
     createAppointmentService = new CreateAppointmentService(
       fakeAppointmentRepository,
-      fakeNotificationsRepository
+      fakeNotificationsRepository,
+      fakeCacheProvider
     )
   })
 

@@ -1,16 +1,22 @@
 import User from '@modules/users/infra/typeorm/entities/User'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentRepository'
 import ListProviderAppointmentsService from './ListProviderAppointmentsService'
 import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService'
 
 let listProviderAppointmentsService: ListProviderAppointmentsService
 let fakeAppointmentRepository: FakeAppointmentRepository
+let fakeCacheProvider: ICacheProvider
 
 describe('List Provider Appointments', () => {
   beforeEach(() => {
     fakeAppointmentRepository = new FakeAppointmentRepository()
+    fakeCacheProvider = new FakeCacheProvider()
+
     listProviderAppointmentsService = new ListProviderAppointmentsService(
-      fakeAppointmentRepository
+      fakeAppointmentRepository,
+      fakeCacheProvider
     )
   })
 

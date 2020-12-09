@@ -9,11 +9,15 @@ import '@shared/infra/typeorm'
 import '@shared/container'
 import AppError from '@shared/errors/AppError'
 import routes from './routes'
+import rateLimiter from './middlewares/ratelimiter'
 
 const app = express()
 
 app.use(express.json())
 app.use(cors())
+
+// rate limite
+app.use(rateLimiter)
 
 // static files
 app.use('/files', express.static(uploadConfig.uploadFolder))

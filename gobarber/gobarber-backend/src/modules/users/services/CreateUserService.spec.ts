@@ -1,3 +1,4 @@
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
 import AppError from '@shared/errors/AppError'
 import { v4 as uuid } from 'uuid'
 import User from '../infra/typeorm/entities/User'
@@ -10,15 +11,18 @@ import CreateUserService from './CreateUserService'
 let fakeHashProvider: IHashProvider
 let createUserService: CreateUserService
 let fakeUserRepository: IUserRepository
+let fakeCacheProvider: FakeCacheProvider
 
 describe('Create User', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     fakeHashProvider = new FakeHashProvider()
+    fakeCacheProvider = new FakeCacheProvider()
 
     createUserService = new CreateUserService(
       fakeUserRepository,
-      fakeHashProvider
+      fakeHashProvider,
+      fakeCacheProvider
     )
   })
 

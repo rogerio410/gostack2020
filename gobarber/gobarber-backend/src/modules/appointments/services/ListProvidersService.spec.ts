@@ -4,23 +4,31 @@ import FakeUserRepository from '@modules/users/repositories/fakes/FakeUserReposi
 import IUserRepository from '@modules/users/repositories/IUserRepository'
 import CreateUserService from '@modules/users/services/CreateUserService'
 import ShowProfileService from '@modules/users/services/ShowProfileService'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
 import ListProviderService from './ListProvidersService'
 
 let fakeUserRepository: IUserRepository
 let createUserService: CreateUserService
 let fakeHashProvider: IHashProvider
-let showProfileService: ShowProfileService
 let listProviderService: ListProviderService
+let fakeCacheProvider: ICacheProvider
 
 describe('List Provider', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
     fakeHashProvider = new FakeHashProvider()
+    fakeCacheProvider = new FakeCacheProvider()
+
     createUserService = new CreateUserService(
       fakeUserRepository,
-      fakeHashProvider
+      fakeHashProvider,
+      fakeCacheProvider
     )
-    listProviderService = new ListProviderService(fakeUserRepository)
+    listProviderService = new ListProviderService(
+      fakeUserRepository,
+      fakeCacheProvider
+    )
   })
 
   it('should to list providers', async () => {

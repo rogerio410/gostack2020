@@ -29,6 +29,11 @@ class CreateAppointmentService {
     date,
   }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date)
+    const provider = new User()
+    provider.id = provider_id
+
+    const user = new User()
+    user.id = user_id
 
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError("You can't book an appointment on past")
@@ -42,19 +47,14 @@ class CreateAppointmentService {
       throw new AppError("You can't book a service at this time")
     }
 
-    const findAppointmentInSameDate = await this.repository.findByDate(
-      appointmentDate
+    const findAppointmentInSameDate = await this.repository.findByDateAndProvider(
+      appointmentDate,
+      provider
     )
 
     if (findAppointmentInSameDate) {
       throw new AppError('There is already an appointment at this date')
     }
-
-    const provider = new User()
-    provider.id = provider_id
-
-    const user = new User()
-    user.id = user_id
 
     const appointment = await this.repository.create({
       provider_id: provider.id,

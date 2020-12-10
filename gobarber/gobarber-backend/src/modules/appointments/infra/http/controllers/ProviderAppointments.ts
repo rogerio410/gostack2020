@@ -9,7 +9,7 @@ import AppointmentRepository from '../../typeorm/repositories/AppointmentReposit
 
 class ProviderAppointmentsController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const { day, month, year } = request.body
+    const { day, month, year } = request.query
     const { user } = request
 
     const listProviderAppointmentsService = container.resolve(
@@ -18,9 +18,9 @@ class ProviderAppointmentsController {
 
     const appointments = await listProviderAppointmentsService.execute({
       provider_id: user.id,
-      day,
-      month,
-      year,
+      month: Number(month),
+      year: Number(year),
+      day: Number(day),
     })
     return response.json(appointments)
   }

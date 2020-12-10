@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe'
-import { getDate, getDaysInMonth } from 'date-fns'
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
+import { classToClass } from 'class-transformer'
 import IAppointmentRepository from '../repositories/IAppointmentRepository'
 import Appointment from '../infra/typeorm/entities/Appointment'
 
@@ -32,6 +32,8 @@ class ListProviderAppointmentsService {
       cacheKey
     )
 
+    // let appointments
+
     if (!appointments) {
       appointments = await this.appointmentRepository.findAll({
         month,
@@ -39,6 +41,8 @@ class ListProviderAppointmentsService {
         day,
         provider_id,
       })
+
+      appointments = classToClass(appointments)
 
       await this.cacheProvider.save(cacheKey, appointments)
     }

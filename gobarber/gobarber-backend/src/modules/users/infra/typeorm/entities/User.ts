@@ -25,6 +25,7 @@ class User extends AuditBaseModel {
   password: string
 
   @Column({ nullable: true })
+  @Exclude()
   avatar: string
 
   @OneToMany(() => Appointment, appointment => appointment.provider)

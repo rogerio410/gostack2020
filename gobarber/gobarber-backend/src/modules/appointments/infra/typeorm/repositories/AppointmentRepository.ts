@@ -34,9 +34,12 @@ class AppointmentRepository implements IAppointmentRepository {
     return appointment
   }
 
-  public async findByDate(date: Date): Promise<Appointment | undefined> {
+  public async findByDateAndProvider(
+    date: Date,
+    provider: User
+  ): Promise<Appointment | undefined> {
     const appointment = await this.ormRepository.findOne({
-      where: { date },
+      where: { date, provider },
     })
 
     return appointment
@@ -52,7 +55,10 @@ class AppointmentRepository implements IAppointmentRepository {
     year,
     day,
   }: IFindAllAppointmentDTO): Promise<Appointment[]> {
-    let appointments = this.ormRepository.createQueryBuilder().select()
+    let appointments = this.ormRepository
+      .createQueryBuilder()
+      .leftJoinAndSelect('Appointment.user', 'User')
+      .select()
 
     if (provider_id)
       appointments = appointments.where(

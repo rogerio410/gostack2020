@@ -1,29 +1,29 @@
 import React, { useCallback, useRef } from 'react'
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi'
+import { FiLock } from 'react-icons/fi'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import * as Yup from 'yup'
 import logoImg from '../../assets/logo.svg'
 import { Container, AnimationContainer, Content, Background } from './styles'
 
-import { useAuth } from '../../context_hooks/AuthContext'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import getValidationErrors from '../../utils/getValidationErrors'
 import { useToast } from '../../context_hooks/ToastContext'
+import api from '../../services/api'
 
 interface SignInFormData {
-  email: string
   password: string
+  password_confirmation: string
 }
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
 
-  const { signIn, user } = useAuth()
   const { addToast } = useToast()
   const history = useHistory()
+  const location = useLocation()
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -31,20 +31,32 @@ const SignIn: React.FC = () => {
         formRef.current?.setErrors({})
 
         const schema = Yup.object().shape({
-          email: Yup.string()
-            .required('E-mail obrigatório')
-            .email('Digite um email válido'),
-          password: Yup.string().min(4, 'Senha Obrigatória')
+          password: Yup.string().min(4, 'Senha Obrigatória'),
+          password_confirmation: Yup.string().oneOf(
+            [Yup.ref('password'), undefined],
+            'Senhas divergem. Verifique'
+          )
         })
 
         await schema.validate(data, {
           abortEarly: false
         })
-        // validation OK
-        await signIn({ email: data.email, password: data.password })
 
-        // redirect to Dashboard
-        history.push('/dashboard')
+        const token = location.search.replace('?token=', '')
+
+        if (!token) {
+          throw new Error()
+        }
+
+        // ResetPassword
+        await api.post('password/reset', {
+          password: data.password,
+          password_confirmation: data.password_confirmation,
+          token
+        })
+
+        // redirect to Login
+        history.push('/')
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error)
@@ -54,13 +66,12 @@ const SignIn: React.FC = () => {
 
         addToast({
           type: 'error',
-          title: 'Error na Autenticação',
-          description:
-            'Ocorreu um erro ao fazer login, verifique as credenciais'
+          title: 'Error ao Resetar a senha',
+          description: 'Ocorreu um erro ao resetar sua senha, tente novamente'
         })
       }
     },
-    [signIn, addToast, history]
+    [addToast, history, location.search]
   )
 
   return (
@@ -70,29 +81,23 @@ const SignIn: React.FC = () => {
           <img src={logoImg} alt="GoBarber" />
 
           <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Faça seu logon</h1>
-            <Input
-              name="email"
-              icon={FiMail}
-              type="email"
-              placeholder="E-mail"
-            />
+            <h1>Resetar senha</h1>
+
             <Input
               name="password"
               icon={FiLock}
               type="password"
-              placeholder="Senha"
+              placeholder="Nova Senha"
+            />
+            <Input
+              name="password_confirmation"
+              icon={FiLock}
+              type="password"
+              placeholder="Confirmação Senha"
             />
 
-            <Button type="submit">Entrar</Button>
-
-            <Link to="/forgot-password">Esqueci minha senha</Link>
+            <Button type="submit">Alterar Senha</Button>
           </Form>
-
-          <a href="signup">
-            <FiLogIn />
-            Criar conta
-          </a>
         </AnimationContainer>
       </Content>
       <Background />

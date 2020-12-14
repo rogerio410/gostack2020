@@ -1,7 +1,4 @@
-import path from 'path'
-import fs from 'fs'
 import User from '@modules/users/infra/typeorm/entities/User'
-import uploadConfig from '@config/upload'
 import AppError from '@shared/errors/AppError'
 import { injectable, inject } from 'tsyringe'
 import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider'
@@ -16,7 +13,7 @@ interface IRequest {
 class UpdateUserAvatarService {
   constructor(
     @inject('UserRepository') private userRepository: IUserRepository,
-    @inject('UserRepository') private storageProvider: IStorageProvider
+    @inject('StorageProvider') private storageProvider: IStorageProvider
   ) {
     this.userRepository = userRepository
   }

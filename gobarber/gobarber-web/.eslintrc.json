@@ -40,6 +40,8 @@
     "react/prop-types": "off",
     "react/jsx-one-expression-per-line": "off",
     "react/jsx-props-no-spreading": "off",
+    "import/no-duplicates": "off",
+    "no-duplicate-imports": "off",
     "react/jsx-filename-extension": [
       1,
       {

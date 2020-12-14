@@ -16,11 +16,11 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-// rate limite
-app.use(rateLimiter)
-
 // static files
 app.use('/files', express.static(uploadConfig.uploadFolder))
+
+// rate limite
+app.use(rateLimiter)
 
 app.use(routes)
 

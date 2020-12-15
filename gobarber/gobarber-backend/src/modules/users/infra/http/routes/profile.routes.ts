@@ -12,7 +12,7 @@ routes.put(
   '/',
   celebrate({
     body: {
-      nome: Joi.string().required(),
+      name: Joi.string().required(),
       email: Joi.string().email().required(),
       old_password: Joi.string(),
       password: Joi.string(),

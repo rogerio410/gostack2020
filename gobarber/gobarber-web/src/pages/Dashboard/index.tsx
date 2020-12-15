@@ -5,6 +5,7 @@ import { isToday, format, isAfter } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { FiClock, FiPower } from 'react-icons/fi'
 import { parseISO } from 'date-fns/esm'
+import { Link } from 'react-router-dom'
 import logoImg from '../../assets/logo.svg'
 import { useAuth } from '../../context_hooks/AuthContext'
 import api from '../../services/api'
@@ -137,7 +138,9 @@ const Dashboard: React.FC = () => {
             <img src={user.avatar_url} alt={user.name} />
             <div>
               <span>Bem vindo,</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <span>{user.name}</span>
+              </Link>
             </div>
           </Profile>
 

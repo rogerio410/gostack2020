@@ -49,8 +49,17 @@ export const Profile = styled.div`
     margin-left: 16px;
     line-height: 24px;
 
-    strong {
+    > span {
+      color: #f4ede8;
+    }
+
+    a {
       color: #ff9000;
+      text-decoration: none;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 `

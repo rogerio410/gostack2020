@@ -22,3 +22,6 @@
 [submodule "level4/go-ecommerce-nodejs-L4"]
 	path = level4/go-ecommerce-nodejs-L4
 	url = https://github.com/rogerio410/go-ecommerce-nodejs-L4.git
+[submodule "level5/goRestaurant-react-L5"]
+	path = level5/goRestaurant-react-L5
+	url = https://github.com/rogerio410/goRestaurant-react-L5.git

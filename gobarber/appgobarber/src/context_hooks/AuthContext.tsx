@@ -4,7 +4,7 @@ import api from '../services/api'
 
 interface AuthState {
   token: string
-  user: object
+  user: User
 }
 
 interface SignInCredentials {
@@ -12,8 +12,15 @@ interface SignInCredentials {
   password: string
 }
 
+interface User {
+  id: string
+  name: string
+  email: string
+  avatar_url: string
+}
+
 interface AuthContextData {
-  user: object
+  user: User
   signIn(credentials: SignInCredentials): Promise<void>
   signOut(): void
   loading: boolean
@@ -33,6 +40,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       const user = await AsyncStorage.getItem('@GoBarber:user')
 
       if (token && user) {
+        api.defaults.headers.authorization = `Bearer ${token}`
         setData({ token, user: JSON.parse(user) })
       }
 
@@ -54,6 +62,8 @@ export const AuthProvider: React.FC = ({ children }) => {
       ['@GoBarber:token', token],
       ['@GoBarber:user', JSON.stringify(user)]
     ])
+
+    api.defaults.headers.authorization = `Bearer ${token}`
 
     setData({ token, user })
   }, [])

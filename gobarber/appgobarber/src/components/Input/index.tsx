@@ -7,6 +7,7 @@ import { useField } from '@unform/core'
 interface InputProps extends TextInputProps {
     name: string
     icon: string
+    containerStyle?: {}
 }
 
 interface InputValueReference {
@@ -17,7 +18,7 @@ interface InputRef {
     focus(): void
 }
 
-const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, icon, ...props }, ref) => {
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, icon, containerStyle = {}, ...props }, ref) => {
 
     const { fieldName, defaultValue = '', error, registerField } = useField(name)
     const inputValueRef = useRef<InputValueReference>({ value: defaultValue })
@@ -55,8 +56,7 @@ const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, ico
     }, [fieldName, registerField])
 
     return (
-
-        <Container isFocused={isFocused} isErrored={!!error}>
+        <Container style={containerStyle} isFocused={isFocused} isErrored={!!error}>
             <Icon name={icon} size={20} color={isFocused || isFilled ? "#ff9000" : "#666360"} />
             <TextInput
                 ref={inputElementRef}
